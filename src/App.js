@@ -36,11 +36,10 @@ const App = () => {
         title="Groceries List"/>     
       <Content 
         items={items} 
-        setItems={setItems}
         handleCheck={handleCheck}
         handleDelete={handleDelete}
       />
-      <Footer/>
+      <Footer length={items.length}/>
 
     </>
 
