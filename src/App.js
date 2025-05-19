@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React,{ useState } from 'react'
+import Header from './components/Header'
+import Content from './components/Content'
+import Footer from './components/Footer'
 
-function App() {
+const App = () => {
+
+   const [items, setItems] = useState([
+    { id: 1, checked: false, item: 'Milk' },
+    { id: 2, checked: false, item: 'Bread' },
+    { id: 3, checked: false, item: 'Eggs' }
+  ])
+
+
+   const handleCheck = (id) => {
+    const listItems = items.map(item =>
+      item.id === id ? { ...item, checked: !item.checked } : item
+    )
+    setItems(listItems)
+    localStorage.setItem('shoppinglist', JSON.stringify(listItems))
+  }
+
+
+  const handleDelete = (id)=>{
+    const listItems = items.filter(item=>item.id !== id)
+    setItems(listItems)
+    localStorage.setItem('shoppinglist',JSON.stringify(listItems))
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    <>
+
+      <Header 
+        title="Groceries List"/>     
+      <Content 
+        items={items} 
+        setItems={setItems}
+        handleCheck={handleCheck}
+        handleDelete={handleDelete}
+      />
+      <Footer/>
+
+    </>
+
+  )
+
 }
 
-export default App;
+export default App
