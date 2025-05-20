@@ -79,13 +79,14 @@ const App = () => {
     )
     setItems(listItems)
 
-    const myItem = listItems.filter(item=>item.id === id)
+    
+    const myItem = listItems.map(item=>item.id === id)
     const updatedOptions = {
       method : 'PATCH',
       headers : {
-        'Content-Type':'application/json'
+        'COntent-Type' : 'application/json'
       },
-      body : JSON.stringify({checked : myItem[0].checked})
+      bosy : JSON.stringify({checked : myItem[0].checked})
     }
 
     const reqUrl = `${API_URL}/${id}`
@@ -94,11 +95,15 @@ const App = () => {
   }
 
 
-  const handleDelete = (id)=>{
+  const handleDelete =async (id)=>{
     const listItems = items.filter(item=>item.id !== id)
     setItems(listItems)
 
-    
+    const deleteOptions = {method : 'DELETE'}
+    const reqUrl = `${API_URL}/${id}`
+    const result =await apiRequest(reqUrl,deleteOptions)
+      if(!result) setFetchError(result)
+
 
   }
 

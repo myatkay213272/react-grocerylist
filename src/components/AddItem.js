@@ -6,7 +6,7 @@ const inputRef = useRef()
   
 
   return (
-    <form className="row g-2 align-items-center" onSubmit={handleSubmit}>
+    <form className="row g-2 align-items-center p-3" onSubmit={handleSubmit}>
       <div className="col-auto">
         <label htmlFor="addItemInput" className="col-form-label">
           Add Item

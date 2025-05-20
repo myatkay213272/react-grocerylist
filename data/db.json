@@ -16,16 +16,6 @@
       "item": "Eggs"
     },
     {
-      "id": "31",
-      "checked": false,
-      "item": "Cocacola"
-    },
-    {
-      "id": "311",
-      "checked": true,
-      "item": "Banana"
-    },
-    {
       "id": "3111",
       "checked": false,
       "item": "Cocacola"
