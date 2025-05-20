@@ -4,6 +4,7 @@ import Content from './components/Content'
 import Footer from './components/Footer'
 import AddItem from './components/AddItem'
 import SearchItem from './components/SearchItem'
+import apiRequest from './hooks/apiRequest'
 
 const App = () => {
 
@@ -40,12 +41,28 @@ const App = () => {
 
 
 
-  const addItem = (item)=>{
+  const addItem = async (item)=>{
     const id =items.length ? items[items.length - 1].id + 1 : 1
     const myNewItem = {id,checked : false, item}
     const listItems = [...items,myNewItem]
     setItems(listItems)
+
+    const postOptions = {
+      method : 'POST',
+      headers : {
+        'Content-Type' : 'application/json'
+      },
+      body : JSON.stringify(myNewItem)
+    }
+    // You want to tell the server: “Hey, add this new item.”
+    // Method: POST = to create new data.
+    // Header: tells the server you're sending JSON.
+    // Body: the new item, converted to a JSON string.
+
+    const result = await apiRequest(API_URL,postOptions)
+    if(result) setFetchError(result)
   }
+
 //       index
 // id = items[2].id + 1
 
@@ -56,17 +73,33 @@ const App = () => {
 
 
 
-   const handleCheck = (id) => {
+   const handleCheck = async (id) => {
     const listItems = items.map(item =>
       item.id === id ? { ...item, checked: !item.checked } : item
     )
     setItems(listItems)
+
+    const myItem = listItems.filter(item=>item.id === id)
+    const updatedOptions = {
+      method : 'PATCH',
+      headers : {
+        'Content-Type':'application/json'
+      },
+      body : JSON.stringify({checked : myItem[0].checked})
+    }
+
+    const reqUrl = `${API_URL}/${id}`
+    const result = await apiRequest(reqUrl,updatedOptions)
+      if(!result) setFetchError(result)
   }
 
 
   const handleDelete = (id)=>{
     const listItems = items.filter(item=>item.id !== id)
     setItems(listItems)
+
+    
+
   }
 
   const handleSubmit = (e)=>{
@@ -88,6 +121,12 @@ const App = () => {
       <Header 
         title="Groceries List"
       />  
+
+       <SearchItem
+        search = {search}
+        setSearch={setSearch}
+      />
+
       
       <AddItem
         newItem={newItem}
@@ -95,11 +134,7 @@ const App = () => {
         handleSubmit={handleSubmit}
       />  
 
-      <SearchItem
-        search = {search}
-        setSearch={setSearch}
-      />
-
+     
       <main>
 
        {isLoading && (
